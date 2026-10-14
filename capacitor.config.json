@@ -1,0 +1,8 @@
+{
+  "appId": "com.ridegarage.app",
+  "appName": "Ride Garage",
+  "webDir": "www",
+  "server": {
+    "hostname": "localhost"
+  }
+}
