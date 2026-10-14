@@ -1,0 +1,21 @@
+# Simulator compilation check; Apple signing is required for TestFlight/App Store.
+workflows:
+  ios-unsigned-check:
+    name: Ride Garage iOS simulator build check
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    environment:
+      node: 22
+      xcode: latest
+    scripts:
+      - name: Install dependencies
+        script: npm install --no-audit --no-fund
+      - name: Download site
+        script: npm run prepare:web
+      - name: Create iOS project
+        script: npx cap add ios
+      - name: Sync iOS project
+        script: npx cap sync ios
+      - name: Build simulator app without signing
+        script: |
+          xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
