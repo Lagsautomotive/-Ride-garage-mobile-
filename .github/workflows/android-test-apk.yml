@@ -16,7 +16,11 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-      - uses: android-actions/setup-android@v3
+      # Use the Android SDK preinstalled on GitHub's Ubuntu runner.
+      - name: Configure Android SDK
+        run: |
+          echo "ANDROID_HOME=${ANDROID_SDK_ROOT:-$ANDROID_HOME}" >> "$GITHUB_ENV"
+          yes | sdkmanager --licenses >/dev/null || true
       - name: Install dependencies
         run: npm install --no-audit --no-fund
       - name: Prepare Ride Garage site
