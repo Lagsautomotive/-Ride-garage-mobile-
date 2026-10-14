@@ -16,6 +16,13 @@ workflows:
         script: npx cap add ios
       - name: Sync iOS project
         script: npx cap sync ios
+      - name: Generate branded iOS assets
+        script: |
+          if [ -f assets/icon.png ] && [ -f assets/splash.png ]; then
+            npx capacitor-assets generate --ios
+          else
+            echo "Branding files not uploaded yet; using Capacitor defaults."
+          fi
       - name: Build simulator app without signing
         script: |
           xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
